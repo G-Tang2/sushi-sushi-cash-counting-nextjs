@@ -1,9 +1,13 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto } from "next/font/google";
+import Nav from "./components/Nav";
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "500", "700", "900"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,7 +23,10 @@ export default function RootLayout({
     // footer is hidden to hide sign up link
     <ClerkProvider appearance={{ elements: { footer: "hidden" } }}>
       <html lang="en">
-        <body className={inter.className}>{children}</body>
+        <body className={roboto.className}>
+          <Nav />
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   );
