@@ -7,8 +7,11 @@ export default function Page() {
         appearance={{
           elements: {
             formButtonPrimary: {
-              backgroundColor: "#dd9f87",
-              color: "#221f20",
+              backgroundColor: "#ed9a83",
+              "&:hover": {
+                backgroundColor: "#afb378",
+              },
+              color: "white",
             },
           },
         }}
