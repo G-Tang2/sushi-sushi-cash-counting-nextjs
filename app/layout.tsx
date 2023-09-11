@@ -1,4 +1,3 @@
-import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
@@ -20,14 +19,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    // footer is hidden to hide sign up link
-    <ClerkProvider appearance={{ elements: { footer: "hidden" } }}>
-      <html lang="en">
-        <body className={roboto.className}>
-          <Nav />
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={roboto.className}>
+        <Nav />
+        {children}
+      </body>
+    </html>
   );
 }
