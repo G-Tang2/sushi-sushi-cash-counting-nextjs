@@ -19,8 +19,10 @@ const SignUp = () => {
     e.preventDefault();
     const res = await fetch("/api/auth/users", {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userInfo),
     }).then((res) => res.json());
+
     if (res?.error) return setError(res.error);
   };
 

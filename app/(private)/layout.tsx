@@ -8,7 +8,7 @@ interface Props {
 export default async function RootLayout({ children }: Props) {
   // all users have to sign in first
   const session = await getServerSession(authOptions);
-  //   if (!session?.user) redirect("/sign-in");
+  if (!session?.user) redirect("/");
 
   return <>{children}</>;
 }

@@ -1,6 +1,7 @@
-import startDB from "@/lib/db";
-import User from "@/models/user";
+import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
+import bcrypt from "bcrypt";
+import prisma from "@/lib/db";
 
 interface NewUserRequest {
   email: string;
@@ -17,24 +18,24 @@ interface NewUserResponse {
 
 type NewResponse = NextResponse<{ user?: NewUserResponse; error?: string }>;
 
-export const POST = async (req: Request): Promise<NewResponse> => {
-  const body = (await req.json()) as NewUserRequest;
-
-  await startDB();
-
-  const oldUser = await User.findOne({ username: body.username });
-  if (oldUser)
-    return NextResponse.json(
-      { error: "User already exists." },
-      { status: 422 }
-    );
-
-  const user = await User.create({ ...body });
-
-  return NextResponse.json({
-    user: {
-      ...user,
-      id: user._id.toString(),
+export const POST = async (req: Request): Promise<NextResponse> => {
+  const body = await req.json();
+  const { username, email, password } = body;
+  const exist = await prisma.user.findFirst({
+    where: {
+      username: username,
     },
   });
+
+  if (exist) {
+    return new NextResponse("User already exists.", { status: 400 });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const user = await prisma.user.create({
+    data: { username, email, password: hashedPassword },
+  });
+
+  return NextResponse.json(user);
 };

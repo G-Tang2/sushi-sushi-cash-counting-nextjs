@@ -1,57 +1,53 @@
-import startDB from "@/lib/db";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import UserSchema from "@/models/user";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import bcrypt from "bcrypt";
+import prisma from "@/lib/db";
 
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
+  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       type: "credentials",
-      credentials: {},
+      credentials: {
+        username: { label: "Username", type: "text" },
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
       async authorize(credentials) {
-        const { username, password } = credentials as {
-          username: string;
-          password: string;
-        };
+        if (!credentials?.username || !credentials.password) {
+          return null;
+        }
 
-        await startDB();
+        const user = await prisma.user.findUnique({
+          where: {
+            username: credentials.username,
+          },
+        });
 
-        console.log(username);
-        console.log(password);
-
-        const user = await UserSchema.findOne({ username });
         if (!user) {
-          console.log("User not found");
-          throw Error("Incorrect username or password.");
-        }
-        const passwordMatch = await user.comparePassword(password);
-        if (!passwordMatch) {
-          console.log("Password not found");
-          throw Error("Incorrect username or password.");
+          console.log("User does not exist.");
+          return null;
         }
 
-        return {
-          username: user.username,
-          id: user._id,
-        };
+        const passwordMatch = await bcrypt.compare(
+          credentials.password,
+          user.password as string
+        );
+
+        if (!passwordMatch) {
+          console.log("Password does not match.");
+          return null;
+        }
+
+        return user;
       },
     }),
   ],
-  callbacks: {
-    jwt(params) {
-      params.token.id = params.user.id;
-      return params.token;
-    },
-    session({ session, token }) {
-      if (session.user) {
-        (session.user as { id: string }).id = token.id as string;
-      }
-      return session;
-    },
-  },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const authHandler = NextAuth(authOptions);
