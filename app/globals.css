@@ -4,6 +4,7 @@
 
 @layer base {
   body {
-    background-color: #fdfaf5;
+    background-color: rgb(49, 54, 60);
+    text-align: -webkit-center;
   }
 }
