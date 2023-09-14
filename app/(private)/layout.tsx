@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import Nav from "@/components/Nav";
 
 interface Props {
   children: React.ReactNode;
@@ -10,5 +11,10 @@ export default async function RootLayout({ children }: Props) {
   const session = await getServerSession(authOptions);
   if (!session?.user) redirect("/");
 
-  return <>{children}</>;
+  return (
+    <>
+      <Nav />
+      {children}
+    </>
+  );
 }

@@ -1,7 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
-import Nav from "../components/Nav";
 import AuthProvider from "@/components/AuthProvider";
 
 const roboto = Roboto({
@@ -22,10 +21,7 @@ export default async function RootLayout({
   return (
     <AuthProvider>
       <html lang="en">
-        <body className={roboto.className}>
-          <Nav />
-          {children}
-        </body>
+        <body className={roboto.className}>{children}</body>
       </html>
     </AuthProvider>
   );
