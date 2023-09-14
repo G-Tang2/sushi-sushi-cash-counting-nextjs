@@ -14,7 +14,6 @@ export const authOptions: NextAuthOptions = {
       type: "credentials",
       credentials: {
         username: { label: "Username", type: "text" },
-        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -47,6 +46,18 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) token.role = user.role;
+      return token;
+    },
+    session({ session, token }) {
+      if (session?.user) {
+        session.user.role = token.role;
+      }
+      return session;
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
 };
 
