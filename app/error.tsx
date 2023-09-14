@@ -15,7 +15,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex flex-col h-screen justify-center items-center w-[260px]">
+    <main className="flex flex-col h-screen justify-center items-center w-[260px]">
       <h2 className="text-xl p-5">{error.message}</h2>
       <button
         onClick={
@@ -26,6 +26,6 @@ export default function Error({
       >
         Go Back
       </button>
-    </div>
+    </main>
   );
 }
