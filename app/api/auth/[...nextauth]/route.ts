@@ -58,6 +58,9 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  pages: {
+    signIn: "/",
+  },
   secret: process.env.NEXTAUTH_SECRET,
 };
 
