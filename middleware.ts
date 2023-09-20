@@ -12,7 +12,6 @@ const routeMatchesRoles = (req: NextRequestWithAuth) => {
 };
 export default withAuth(
   function middleware(req) {
-    console.log(req);
     if (!routeMatchesRoles(req)) {
       return NextResponse.rewrite(new URL("/page-not-found", req.url));
     }

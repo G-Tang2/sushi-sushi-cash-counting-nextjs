@@ -7,7 +7,6 @@ import { ROLE } from "@/types/roles";
 
 function LoginForm() {
   const [errorMessage, setErrorMessage] = useState("");
-  const [unauthorisedError, setUnauthorisedError] = useState(false);
   const [userInfo, setUserInfo] = useState({
     email: "",
     username: "",
@@ -39,14 +38,11 @@ function LoginForm() {
     } else if (session?.user.role.toLowerCase() == ROLE.USER) {
       router.replace("user/dashboard");
     } else {
-      setUnauthorisedError(true);
+      throw new Error(
+        "Unauthorised Account. Please request a new account from the admin."
+      );
     }
   };
-
-  if (unauthorisedError)
-    throw new Error(
-      "Unauthorised Account. Please request a new account from the admin."
-    );
 
   return (
     <>

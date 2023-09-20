@@ -1,9 +1,11 @@
 "use client";
 import React, { ChangeEventHandler, FormEventHandler, useState } from "react";
 import * as Form from "@radix-ui/react-form";
+import { useRouter } from "next/navigation";
 
-const SignUp = () => {
-  const [error, setError] = useState("");
+export default function RegisterForm() {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [userInfo, setUserInfo] = useState({
     email: "",
     username: "",
@@ -15,15 +17,30 @@ const SignUp = () => {
     setUserInfo({ ...userInfo, [name]: value });
   };
 
+  const router = useRouter();
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    const res = await fetch("/api/auth/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userInfo),
-    }).then((res) => res.json());
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/auth/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userInfo),
+      }).then((res) => res.json());
 
-    if (res?.error) return setError(res.error);
+      console.log(res);
+      if (res.error) {
+        setErrorMessage(res.error);
+      } else {
+        router.push("dashboard");
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        console.log(e);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -37,16 +54,8 @@ const SignUp = () => {
             className="text-[13px]  opacity-[0.8]"
             match="valueMissing"
           >
-            Please enter your username
+            Please enter your email
           </Form.Message>
-          {error ? (
-            <Form.Message
-              className="text-[13px]  opacity-[0.8]"
-              match="valueMissing"
-            >
-              {error}
-            </Form.Message>
-          ) : null}
         </div>
         <Form.Control asChild>
           <input
@@ -68,14 +77,6 @@ const SignUp = () => {
           >
             Please enter your username
           </Form.Message>
-          {error ? (
-            <Form.Message
-              className="text-[13px]  opacity-[0.8]"
-              match="valueMissing"
-            >
-              {error}
-            </Form.Message>
-          ) : null}
         </div>
         <Form.Control asChild>
           <input
@@ -107,13 +108,19 @@ const SignUp = () => {
           />
         </Form.Control>
       </Form.Field>
+      {errorMessage ? (
+        <div className="bg-red-600 bg-opacity-80 text-sm w-full h-10 my-1 justify-center items-center inline-flex rounded-[4px]">
+          {errorMessage}
+        </div>
+      ) : null}
       <Form.Submit asChild>
-        <button className="box-border w-full text-black shadow-blackA7 hover:bg-mauve3 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none mt-[10px]">
-          Sign Up
+        <button
+          disabled={isLoading}
+          className="box-border w-full text-black shadow-blackA7 hover:bg-mauve3 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none mt-[10px]"
+        >
+          Register
         </button>
       </Form.Submit>
     </Form.Root>
   );
-};
-
-export default SignUp;
+}
