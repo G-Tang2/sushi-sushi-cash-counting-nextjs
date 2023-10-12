@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import Safe from "./Safe";
 import Till from "./Till";
@@ -51,12 +53,75 @@ export default function MultiStepForm() {
     initialBankTakingFormData
   );
 
-  switch (step) {
-    case Steps.Safe:
-      return <Safe formData={safeFormData} />;
-    case Steps.Till:
-      return <Till formData={tillFormData} />;
-    case Steps.BankTaking:
-      return <BankTaking formData={bankTakingFormData} />;
-  }
+  const renderForm = () => {
+    switch (step) {
+      case Steps.Safe:
+        return <Safe formData={safeFormData} setFormData={setSafeFormData} />;
+      case Steps.Till:
+        return <Till formData={tillFormData} setFormData={setTillFormData} />;
+      case Steps.BankTaking:
+        return (
+          <BankTaking
+            formData={bankTakingFormData}
+            setFormData={setBankTakingFormData}
+          />
+        );
+    }
+  };
+
+  const nextStep = () => {
+    if (step != undefined) {
+      const i = steps.indexOf(step);
+      const nextStep = steps.at(i + 1);
+      setStep(nextStep);
+    } else {
+      console.log("Step is undefined.");
+    }
+  };
+
+  const previousStep = () => {
+    if (step != undefined) {
+      const i = steps.indexOf(step);
+      const nextStep = steps.at(i - 1);
+      setStep(nextStep);
+    } else {
+      console.log("Step is undefined.");
+    }
+  };
+
+  const isFirstStep = () => {
+    if (step != undefined) {
+      return steps.indexOf(step) === 0;
+    } else {
+      console.log("Step is undefined.");
+    }
+  };
+
+  const isLastStep = () => {
+    if (step != undefined) {
+      return steps.indexOf(step) === steps.length - 1;
+    } else {
+      console.log("Step is undefined.");
+    }
+  };
+
+  return (
+    <div>
+      {renderForm()}
+      <div className="flex flex-row justify-between">
+        {!isFirstStep() ? (
+          <button className={"btn w-24 m-8"} onClick={previousStep}>
+            Back
+          </button>
+        ) : null}
+        {!isLastStep() ? (
+          <div className=" justify-end">
+            <button className={"btn w-24 m-8"} onClick={nextStep}>
+              Next
+            </button>
+          </div>
+        ) : null}
+      </div>
+    </div>
+  );
 }

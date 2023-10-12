@@ -1,11 +1,12 @@
 import { Coin } from "@/common/types";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 interface SafeTakingProps {
   formData: Coin;
+  setFormData: Dispatch<SetStateAction<Coin>>;
 }
 
-function Safe({ formData }: SafeTakingProps) {
+function Safe({ formData, setFormData }: SafeTakingProps) {
   return <div>Safe</div>;
 }
 

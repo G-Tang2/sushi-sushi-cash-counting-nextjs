@@ -1,11 +1,12 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Cash } from "@/common/types";
 
 interface BankTakingProps {
   formData: Cash;
+  setFormData: Dispatch<SetStateAction<Cash>>;
 }
 
-function BankTaking({ formData }: BankTakingProps) {
+function BankTaking({ formData, setFormData }: BankTakingProps) {
   return <div>BankTaking</div>;
 }
 
