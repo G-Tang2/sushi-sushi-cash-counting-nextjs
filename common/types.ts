@@ -7,13 +7,15 @@ export interface Coin {
   twoDollar: number;
 }
 
-export interface Notes {
+export interface Note {
   fiveDollar: number;
   tenDollar: number;
   twentyDollar: number;
   fiftyDollar: number;
   oneHundredDollar: number;
 }
+
+export interface Cash extends Coin, Note {}
 
 export enum Steps {
   Safe,

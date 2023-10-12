@@ -1,6 +1,11 @@
+import { Cash } from "@/common/types";
 import React from "react";
 
-function Till() {
+interface TillTakingProps {
+  formData: Cash;
+}
+
+function Till({ formData }: TillTakingProps) {
   return <div>Till</div>;
 }
 

@@ -1,6 +1,11 @@
 import React from "react";
+import { Cash } from "@/common/types";
 
-function BankTaking() {
+interface BankTakingProps {
+  formData: Cash;
+}
+
+function BankTaking({ formData }: BankTakingProps) {
   return <div>BankTaking</div>;
 }
 
