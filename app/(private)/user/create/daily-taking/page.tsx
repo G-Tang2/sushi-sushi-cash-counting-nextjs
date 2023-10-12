@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import MultiStepForm from "./(components)/MultiStepForm";
-import { Steps } from "./(components)/(enum)/Steps";
+import { Steps } from "@/common/types";
 import Safe from "./(components)/Safe";
 import Till from "./(components)/Till";
 import BankTaking from "./(components)/BankTaking";

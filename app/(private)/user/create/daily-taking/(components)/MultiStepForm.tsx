@@ -1,5 +1,5 @@
 import { ReactElement, useState } from "react";
-import { Steps } from "./(enum)/Steps";
+import { Steps } from "@/common/types";
 
 type MultiStepFormProps = {
   steps: [Steps, ReactElement][];
