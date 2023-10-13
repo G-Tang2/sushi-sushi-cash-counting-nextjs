@@ -109,18 +109,20 @@ export default function MultiStepForm() {
     <div>
       {renderForm()}
       <div className="flex flex-row justify-between">
-        {!isFirstStep() ? (
-          <button className={"btn w-24 m-8"} onClick={previousStep}>
-            Back
-          </button>
-        ) : null}
-        {!isLastStep() ? (
-          <div className=" justify-end">
+        <div className="text-start">
+          {!isFirstStep() ? (
+            <button className={"btn w-24 m-8"} onClick={previousStep}>
+              Back
+            </button>
+          ) : null}
+        </div>
+        <div className="text-end">
+          {!isLastStep() ? (
             <button className={"btn w-24 m-8"} onClick={nextStep}>
               Next
             </button>
-          </div>
-        ) : null}
+          ) : null}
+        </div>
       </div>
     </div>
   );
