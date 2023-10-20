@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import AuthProvider from "@/components/AuthProvider";
+import "@radix-ui/themes/styles.css";
 
 const roboto = Roboto({
   subsets: ["latin"],

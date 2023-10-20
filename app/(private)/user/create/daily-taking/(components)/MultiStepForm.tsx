@@ -53,10 +53,22 @@ export default function MultiStepForm() {
     initialBankTakingFormData
   );
 
+  const setDenominationSafeFormData = (denomination: string, value: number) => {
+    setSafeFormData({
+      ...safeFormData,
+      [denomination]: value,
+    });
+  };
+
   const renderForm = () => {
     switch (step) {
       case Steps.Safe:
-        return <Safe formData={safeFormData} setFormData={setSafeFormData} />;
+        return (
+          <Safe
+            formData={safeFormData}
+            setFormData={setDenominationSafeFormData}
+          />
+        );
       case Steps.Till:
         return <Till formData={tillFormData} setFormData={setTillFormData} />;
       case Steps.BankTaking:
